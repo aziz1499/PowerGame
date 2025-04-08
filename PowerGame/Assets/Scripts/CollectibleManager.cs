@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
+
 using UnityEngine;
 
 public class CollectibleManager : MonoBehaviour
@@ -23,10 +25,18 @@ public class CollectibleManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("Objets ramassables :");
-        foreach (GameObject obj in collectibles)//Une boucle foreach pour afficher les objets de la liste dans la console.
+        bool wasActive = collectibles[0].activeSelf; // vérifier si le premier est actif
+        bool setActive = !wasActive; // inverser l'état pour tous
+
+        foreach (GameObject obj in collectibles)
         {
-            Debug.Log($"- {obj.name}");
+            obj.SetActive(setActive); // toggle actif/inactif
         }
+
+        Debug.Log($"Les objets ont été {(setActive ? "affichés" : "cachés")}.");
     }
+    //L’implémentation CollectibleManager que j fait :
+   // crée une liste publique d’objets ramassables(List<GameObject>),
+//permet via la touche C de les activer/désactiver en séquence,
+//est clairement observable dans le jeu pour démontrer l’usage de la structure.
 }
