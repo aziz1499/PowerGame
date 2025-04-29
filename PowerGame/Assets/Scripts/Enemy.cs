@@ -68,17 +68,35 @@ public class Enemy : MonoBehaviour
         Invoke("StartActivity", 1.25f);
     }
 
+    // === Initialisation des points de patrouille === // LIGNE AJOUTÉE
+    void InitializePatrolGraph() // LIGNE AJOUTÉE
+    {
+        // Exemple de 3 points de patrouille proches
+        var nodeA = new PatrolNode(transform.position); // point initial
+        var nodeB = new PatrolNode(transform.position + new Vector3(2f, 0, 0));
+        var nodeC = new PatrolNode(transform.position + new Vector3(-2f, 0, 0));
+
+        nodeA.neighbors.Add(nodeB);
+        nodeA.neighbors.Add(nodeC);
+        nodeB.neighbors.Add(nodeA);
+        nodeC.neighbors.Add(nodeA);
+
+        patrolGraph.AddRange(new[] { nodeA, nodeB, nodeC });
+        currentPatrolNode = nodeA;
+
+        StartCoroutine(PatrolRoutine());
+    }
 
 
-   
-
-
-   
 
 
 
-//enable movement after room loading
-private void StartActivity()
+
+
+
+
+    //enable movement after room loading
+    private void StartActivity()
     {
         startedMoving = true;
     }
