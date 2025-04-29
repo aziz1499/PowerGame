@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
@@ -69,6 +70,8 @@ public class Enemy : MonoBehaviour
     }
 
     // === Initialisation des points de patrouille === // LIGNE AJOUTÉE
+   // Cette méthode crée trois points de patrouille : un au centre(position de départ), un à droite, un à gauche.
+//Elle relie ces points entre eux pour former un graphe bidirectionnel, puis démarre la coroutine de déplacement.
     void InitializePatrolGraph() // LIGNE AJOUTÉE
     {
         // Exemple de 3 points de patrouille proches
@@ -112,6 +115,7 @@ public class Enemy : MonoBehaviour
                 currentPatrolNode = nextNode;
 
                 yield return new WaitForSeconds(2f); // pause entre déplacements
+                // ce code en general Cree coroutine permet à l’ennemi de se déplacer automatiquement entre les nœuds voisins du graphe.
             }
         }
     }
