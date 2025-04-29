@@ -86,6 +86,35 @@ public class Enemy : MonoBehaviour
 
         StartCoroutine(PatrolRoutine());
     }
+    // === Mouvement automatique entre les points du graphe === // LIGNE AJOUTÉE
+    // lee mouvement va etre dynamique et aleatoire et non pas lineaire comme dans le code de base grace a cette structre 
+    IEnumerator PatrolRoutine() // LIGNE AJOUTÉE
+    {
+        while (!deadNow)
+        {
+            if (currentPatrolNode.neighbors.Count > 0)
+            {
+                int i = Random.Range(0, currentPatrolNode.neighbors.Count);
+                PatrolNode nextNode = currentPatrolNode.neighbors[i];
+
+                float elapsed = 0f;
+                Vector3 start = transform.position;
+                Vector3 end = nextNode.position;
+
+                while (elapsed < 1f)
+                {
+                    transform.position = Vector3.Lerp(start, end, elapsed);
+                    elapsed += Time.deltaTime * patrolSpeed;
+                    yield return null;
+                }
+
+                transform.position = end;
+                currentPatrolNode = nextNode;
+
+                yield return new WaitForSeconds(2f); // pause entre déplacements
+            }
+        }
+    }
 
 
 
