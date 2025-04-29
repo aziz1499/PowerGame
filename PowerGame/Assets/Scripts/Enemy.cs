@@ -20,6 +20,27 @@ public class Enemy : MonoBehaviour
     private bool deadNow = false;//used to avoid running death functions more than once
     [SerializeField] private AudioSource smokeSound;
 
+
+    //  : Graphe de patrouille locale pour l'ennemi // LIGNE AJOUTÉE
+    private class PatrolNode // LIGNE AJOUTÉE
+    {
+        public Vector3 position;
+        public List<PatrolNode> neighbors;
+
+        public PatrolNode(Vector3 pos)
+        {
+            position = pos;
+            neighbors = new List<PatrolNode>();
+        }
+    } // LIGNE AJOUTÉE
+
+    private PatrolNode currentPatrolNode; // LIGNE AJOUTÉE
+    private List<PatrolNode> patrolGraph = new List<PatrolNode>(); // LIGNE AJOUTÉE
+    [SerializeField] private float patrolSpeed = 2f; // LIGNE AJOUTÉE
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +49,10 @@ public class Enemy : MonoBehaviour
         {
             //TODO, if bug apears, check this
             //tries to assign current room layout to parent
-            if(transform.parent.GetComponent<RoomLayoutDetails>() != null)
+
+            
+
+            if (transform.parent.GetComponent<RoomLayoutDetails>() != null)
             {
                 roomImIn = transform.parent.GetComponent<RoomLayoutDetails>();
             }
@@ -37,12 +61,24 @@ public class Enemy : MonoBehaviour
                 roomImIn = FindObjectOfType<RoomLayoutDetails>();
             }
         }
+
+        InitializePatrolGraph();// LIGNE AJOUTÉE (appel de la structure pour le lancement de la patrouille)
+
         StartAddOn();
         Invoke("StartActivity", 1.25f);
     }
 
-    //enable movement after room loading
-    private void StartActivity()
+
+
+   
+
+
+   
+
+
+
+//enable movement after room loading
+private void StartActivity()
     {
         startedMoving = true;
     }
